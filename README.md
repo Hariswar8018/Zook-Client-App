@@ -1,4 +1,4 @@
-# zook_client
+# zook
 
 A new Flutter project.
 

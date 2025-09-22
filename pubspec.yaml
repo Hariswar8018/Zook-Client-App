@@ -1,4 +1,4 @@
-name: zook_client
+name: zook
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -34,6 +34,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  carousel_slider: ^5.1.1
+  flutter_onboarding_slider: ^1.0.11
+  stylish_bottom_bar: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -46,22 +49,13 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.13.1
-  package_rename_plus: ^1.0.1
-
-package_rename_config:
-  android:
-    app_name: "Zook"
-    package_name: "com.starwish.zook"
-    override_old_package: # (Optional) (String) Use this to delete the old folder structure of MainActivity or to use the existing code with the new package name
-    lang: # (Optional) (String) The android development language {kotlin(default) or java}
-
 
 
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
   image_path: "assets/logo.jpg"
-  min_sdk_android: 21 # android min sdk min:16, default 21
+  min_sdk_android: 21
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
