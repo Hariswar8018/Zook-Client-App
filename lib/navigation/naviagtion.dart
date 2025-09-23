@@ -4,6 +4,7 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:zook/Global/others.dart';
 import 'package:zook/navigation/home.dart';
 import 'package:zook/navigation/orders.dart';
+import 'package:zook/navigation/products.dart';
 import 'package:zook/navigation/profile.dart';
 
 class Navigation extends StatefulWidget {
@@ -92,13 +93,14 @@ class _NavigationState extends State<Navigation> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      drawerEnableOpenDragGesture: false,endDrawerEnableOpenDragGesture: false,
       body: SafeArea(
         child: PageView(
           controller: controller,
           children: [
             Home(),
             Orders(),
-            const Center(child: Text('Style')),
+            Products(),
             Profile()
           ],
         ),
