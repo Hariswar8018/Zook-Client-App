@@ -54,9 +54,9 @@ class Onboarding extends StatelessWidget {
         totalPage: 3,indicatorAbove: true,
         speed: 1.8,pageBackgroundColor: Colors.white,
         pageBodies: [
-          con(w, "assets/shopping.jpg", "Turn your Shopping Online", "With our App, Turn you Business Online to millions of Customers"),
-          con(w, "assets/profit.png", "Ease Access of App", "Our App is Easy to use for your Recommended Services"),
-          con(w, "assets/profit2.jpg", "Profit is Fast", "You get paid as soon as the Product is delivered. No waiting"),
+          con(w, "assets/shopping.jpg", "Welcome to ZOOK!", "Start selling smarter with ZOOK. Join our trusted seller network and grow your business with powerful tools and real-time insights."),
+          con(w, "assets/profit.png", "Set Up Your Store in Minutes", "Easy and fast onboarding. Add your products, set prices, and you’re ready to reach thousands of customers on ZOOK."),
+          con(w, "assets/profit2.jpg", "Manage. Sell. Grow.", "From inventory to orders, ZOOK gives you full control to manage your business and scale with ease. Let’s get started!"),
         ],
       ),
     );
@@ -70,10 +70,10 @@ class Onboarding extends StatelessWidget {
         children: [
           Image.asset(asset,width: w,),
           SizedBox(height: 20,),
-          Text(title,style: TextStyle(fontWeight: FontWeight.w700,fontSize: 19),),
+          Text(title,style: TextStyle(fontWeight: FontWeight.w900,fontSize: 21),),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0,vertical: 4),
-            child: Text(desc,style: TextStyle(fontWeight: FontWeight.w300,fontSize: 16),textAlign: TextAlign.center,),
+            child: Text(desc,style: TextStyle(fontWeight: FontWeight.w400,fontSize: 18),textAlign: TextAlign.center,),
           ),
         ],
       ),

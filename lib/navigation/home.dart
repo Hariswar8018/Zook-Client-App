@@ -4,6 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:zook/Global/list.dart';
+import 'package:zook/Global/widgets.dart';
+import 'package:zook/cards/full_card_product.dart' show Full_Card_Product;
+
+import '../cards/seller.dart';
+import '../second_pages/notification.dart' show Notifications;
 
 
 class Home extends StatelessWidget {
@@ -20,30 +26,40 @@ class Home extends StatelessWidget {
         backgroundColor: Color(0xffF6F6F6),
         leading:Padding(
           padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.blue,
-            child: Padding(
-              padding: EdgeInsets.all(1.0),
-              child: CircleAvatar(
-                backgroundImage:
-                NetworkImage("https://cdn.vectorstock.com/i/500p/20/76/man-profile-icon-round-avatar-vector-21372076.jpg"),
+          child: InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>SellerProfile()));
+            },
+            child: CircleAvatar(
+              backgroundColor: Colors.blue,
+              child: Padding(
+                padding: EdgeInsets.all(1.0),
+                child: CircleAvatar(
+                  backgroundImage:
+                  NetworkImage("https://cdn.vectorstock.com/i/500p/20/76/man-profile-icon-round-avatar-vector-21372076.jpg"),
+                ),
               ),
             ),
           ),
         ),centerTitle: true,
         title: Text("Br Nr Innovations",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 15),),
         actions: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey.shade400
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>Notifications()));
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey.shade400
+                ),
+                shape: BoxShape.circle
               ),
-              shape: BoxShape.circle
-            ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Icon(Icons.notifications,size: 18,),
-              )),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Icon(Icons.notifications,size: 18,),
+                )),
+          ),
           SizedBox(width: 14,),
         ],
       ),
@@ -126,20 +142,116 @@ class Home extends StatelessWidget {
               padding: const EdgeInsets.all(19.0),
               child: Text("Recent Orders",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20),),
             ),
+
             Padding(
               padding: const EdgeInsets.all(19.0),
               child: Text("Your Top 10 Trending Products",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20),),
             ),
+            container(w),
             Padding(
               padding: const EdgeInsets.all(19.0),
               child: Text("Your 10 Sell Products",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20),),
             ),
-        
+            container(w),
+            SizedBox(height: 90,)
           ],
         ),
       )
     );
   }
+
+  Widget container(double w ){
+    return Container(
+      width: w,
+      height: w/3+150,
+      child: ListView.builder(
+        itemCount: GL.name.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 11.0),
+            child: InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (_)=>Full_Card_Product()));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 8),
+                        child: Container(
+                          width: w/3,height: w/3,
+                          decoration:BoxDecoration(
+                            image: DecorationImage(image: NetworkImage(GL.pic[index]))
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(width: w/3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(GL.name[index],style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700,fontSize: 13),maxLines: 2,),
+                          )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: GW.buildStarRating(4),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Text("${GW.generateRandomNumber(4)} Reviews",style: TextStyle(fontSize: 12,),),
+                    ),
+                    GW.space(0, 4),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: RichText(
+                          text: TextSpan(
+                            text: '-50%',
+                            style: TextStyle(color: Colors.red, fontSize: 16,fontWeight: FontWeight.w700),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: ' ₹7,499',
+                                style: TextStyle(fontWeight: FontWeight.bold, color:Colors.black,fontSize: 13),
+                              ),
+                            ],
+                          )
+                      ),
+                    ),
+                    GW.space(0, 4),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: RichText(
+                          text: TextSpan(
+                            text: 'MRP : ',
+                            style: TextStyle(color: Colors.black, fontSize: 11,fontWeight: FontWeight.w400),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '₹9,499',
+                                style: TextStyle(fontWeight: FontWeight.w400, color:Colors.black,fontSize: 11,decoration: TextDecoration.lineThrough),
+                              ),
+                            ],
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+
+      ),
+    );
+  }
+
    final List<SalesData> chartData = [
      SalesData(DateTime.now().subtract(Duration(days: 1)), 35),
      SalesData(DateTime.now().subtract(Duration(days: 2)), 28),

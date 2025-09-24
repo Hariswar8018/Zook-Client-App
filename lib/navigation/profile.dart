@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:zook/cards/seller.dart';
+import 'package:zook/main.dart';
+import 'package:zook/second_pages/notification.dart';
+
+import '../second_pages/web.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -38,24 +43,53 @@ class Profile extends StatelessWidget {
                   child: Text("ZOOK1928927U",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14,color: Colors.grey),),
                 ),
                 SizedBox(height: 35,),
-                con(Colors.orange.shade50, "Seller Account",
-                    Icon(Icons.person_outline_rounded,color: Colors.orange,)),
-                con(Colors.blue.shade50, "General Statement",
-                    Icon(Icons.post_add,color: Colors.blue,)),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>SellerProfile()));
+                  },
+                  child: con(Colors.orange.shade50, "Seller Account",
+                      Icon(Icons.person_outline_rounded,color: Colors.orange,)),
+                ),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Web(name: 'About Us', link: 'https://www.brnrinnovations.com/',)));
+                  },
+                  child: con(Colors.blue.shade50, "General Statement",
+                      Icon(Icons.post_add,color: Colors.blue,)),
+                ),
             
-                con(Colors.red.shade50, "Notification",
-                    Icon(Icons.notifications,color: Colors.red)),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Notifications()));
+                  },
+                  child: con(Colors.red.shade50, "Notification",
+                      Icon(Icons.notifications,color: Colors.red)),
+                ),
                 con(Colors.green.shade50, "Language",
                     Icon(Icons.language,color: Colors.green,)),
             
-                con(Colors.orange.shade50, "Seller Help Center",
-                    Icon(Icons.support_agent,color: Colors.orange,)),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Web(name: 'About Us', link: 'https://www.brnrinnovations.com/',)));
+                  },
+                  child: con(Colors.orange.shade50, "Seller Help Center",
+                      Icon(Icons.support_agent,color: Colors.orange,)),
+                ),
             
-                con(Colors.blue.shade50, "About",
-                    Icon(Icons.info,color: Colors.blue,)),
-            
-                con(Colors.orange.shade50, "Log Out",
-                    Icon(Icons.logout_outlined,color: Colors.red,)),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Web(name: 'About Us', link: 'https://www.brnrinnovations.com/',)));
+                  },
+                  child: con(Colors.blue.shade50, "About",
+                      Icon(Icons.info,color: Colors.blue,)),
+                ),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>MyHomePage(title: "")));
+                  },
+                  child: con(Colors.orange.shade50, "Log Out",
+                      Icon(Icons.logout_outlined,color: Colors.red,)),
+                ),
 
                 SizedBox(height: 30,),
                 Center(child: Image.asset("assets/logo.jpg",width: 50,)),
