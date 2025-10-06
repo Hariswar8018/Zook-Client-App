@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zook/Global/widgets.dart';
+import 'package:timelines_plus/timelines_plus.dart';
 
 class OrderDetails extends StatelessWidget {
   const OrderDetails({super.key});
@@ -258,11 +259,98 @@ class OrderDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 19.0,vertical: 10),
               child: Text("Order Timeline",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 18),),
             ),
-            SizedBox(height: 90,)
+            Center(
+              child: Container(
+                width: w-20,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Colors.grey.shade200,
+                    )
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 19.0),
+                  child: FixedTimeline.tileBuilder(
+                    builder: TimelineTileBuilder.connectedFromStyle(
+                      contentsAlign: ContentsAlign.basic,
+                      oppositeContentsBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text("Sep ${20-index}, 2025",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 13),),
+                            Text("12:35",style: TextStyle(color: Colors.grey,fontSize: 12),)
+                          ],
+                        ),
+                      ),
+                      contentsBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(h(index),style: TextStyle(fontWeight: FontWeight.w800,fontSize: 16),),
+                            Text(h1(index),style: TextStyle(color: Colors.grey,fontSize: 12),),
+                          ],
+                        ),
+                      ),
+                      connectorStyleBuilder: (context, index) => ConnectorStyle.solidLine,
+                      indicatorStyleBuilder: (context, index) => IndicatorStyle.dot,
+                      itemCount: 7,
+                    ),
+                    theme: TimelineTheme.of(context).copyWith(
+                      nodePosition: 0.3,
+                      connectorTheme: TimelineTheme.of(context).connectorTheme.copyWith(
+                        thickness: 1.0,
+                      ),
+                      indicatorTheme: TimelineTheme.of(context).indicatorTheme.copyWith(
+                        size: 10.0,
+                        position: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 90,),
           ],
         ),
       ),
     );
+  }
+
+  String h(int i){
+    if(i==0){
+      return "Rourkela, OD";
+    }else if(i==1){
+      return "Ranchi, JK";
+    }else if(i==2){
+      return "Delhi, Delhi";
+    }else if(i==3){
+      return "Seller Sended";
+    }else if(i==4){
+      return "Seller Packed";
+    }else if(i==5){
+      return "Seller Processed";
+    }
+
+    return "Customer Ordered";
+  }
+  String h1(int i){
+    if(i<3){
+      return "Package arrived at ${h(i)}";
+    }else if(i==1){
+      return "Ranchi, JK";
+    }else if(i==2){
+      return "Delhi, Delhi";
+    }else if(i==3){
+      return "Seller Sended the order through Career";
+    }else if(i==4){
+      return "Seller Packed your Order";
+    }else if(i==5){
+      return "Seller Processed the Order";
+    }
+
+    return "Customer Order";
   }
   Widget ro(String str1,String str2, String str3, String str4)=> Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,

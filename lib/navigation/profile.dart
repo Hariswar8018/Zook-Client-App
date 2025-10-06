@@ -65,15 +65,12 @@ class Profile extends StatelessWidget {
                   child: con(Colors.red.shade50, "Notification",
                       Icon(Icons.notifications,color: Colors.red)),
                 ),
-                con(Colors.green.shade50, "Language",
-                    Icon(Icons.language,color: Colors.green,)),
-            
                 InkWell(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (_)=>Web(name: 'About Us', link: 'https://www.brnrinnovations.com/',)));
                   },
-                  child: con(Colors.orange.shade50, "Seller Help Center",
-                      Icon(Icons.support_agent,color: Colors.orange,)),
+                  child: con(Colors.green.shade50, "Seller Help Center",
+                      Icon(Icons.support_agent,color: Colors.green,)),
                 ),
             
                 InkWell(

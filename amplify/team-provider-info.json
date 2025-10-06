@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-zook-dev-81090-authRole",
+      "UnauthRoleArn": "arn:aws:iam::530193444281:role/amplify-zook-dev-81090-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::530193444281:role/amplify-zook-dev-81090-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-zook-dev-81090-deployment",
+      "UnauthRoleName": "amplify-zook-dev-81090-unauthRole",
+      "StackName": "amplify-zook-dev-81090",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:530193444281:stack/amplify-zook-dev-81090/1ea45330-9cfd-11f0-aee8-0265c69ac16f",
+      "AmplifyAppId": "d2wg3gwr0zg5up"
+    },
+    "categories": {
+      "auth": {
+        "zookb90f8a3b": {}
+      }
+    }
+  }
+}

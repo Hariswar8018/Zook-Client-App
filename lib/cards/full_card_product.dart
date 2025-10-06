@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart' show Razorpay;
 import 'package:zook/Global/others.dart';
 
+import '../Global/list.dart';
+import '../Global/widgets.dart';
+
 class Full_Card_Product extends StatefulWidget {
  Full_Card_Product({super.key});
 
@@ -264,6 +267,136 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
               padding: const EdgeInsets.only(left: 19.0),
               child: Text("Shop with Confidence",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 16),),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: ListTile(
+                leading: Icon(Icons.local_shipping),
+                title: Text("Free Delivery",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800),),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: ListTile(
+                leading: Icon(Icons.security),
+                title: Text("Secure Transactions",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800),),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: ListTile(
+                leading: Icon(Icons.add_business),
+                title: Text("Zook Delivered",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w800),),
+              ),
+            ),
+            SizedBox(height: 20,),
+            div(),
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.only(left: 19.0),
+              child: Text("You Might also like",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 16),),
+            ),
+            SizedBox(height: 10,),
+            container(w),
+            SizedBox(height: 20,),
+            div(),
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.only(left: 19.0),
+              child: Text("Description",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 16),),
+            ),
+            SizedBox(height: 10,),
+            k(w, "OS", "Android 14"),
+            k(w, "RAM", "4 GB"),
+            k(w, "Product Dimensions", "18 x 8 x 6 cm; 570 g"),
+            k(w, "Batteries", "1 12V batteries required"),
+            k(w, "Item model number", "Redmi Note 14 Pro+ 5G"),
+            k(w, "Other display features", "Wireless"),
+            k(w, "Resolution", "1220 x 2712 pixels"),
+            SizedBox(height: 19,),
+            Padding(
+              padding: const EdgeInsets.only(left: 19.0),
+              child: Text("What is in the box?",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 16),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 19.0,right: 19),
+              child: Text("90W Charger, Type C USB Cable, Sim Eject Tool, Protective Case, Quick Start Guide, Warranty Card?"
+                ,style: TextStyle(fontWeight: FontWeight.w700,fontSize: 14,color: Colors.grey),),
+            ),
+            SizedBox(height: 20,),
+            div(),
+            SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: Text("Reviews",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 16),),
+            ),
+            Container(
+              width: w,
+              child: Row(
+                children: [
+                  GW.space(13, 0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GW.buildStarRating(4,size: 20),
+                      Text("1106 Ratings",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14),),
+                    ],
+                  ),
+                  Spacer(),
+                  Container(
+                    width: w/3,
+                    height: 35,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                            color: Colors.grey.shade500,width: 0.3
+                        )
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("12 Months "),
+                        Icon(Icons.arrow_drop_down)
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 10,)
+                ],
+              ),
+            ),
+            GW.space(0, 12),
+            star(w, "5", 0.8),
+            star(w, "4", 0.5),
+            star(w, "3", 0.1),
+            star(w, "2", 0.4),
+            star(w, "1", 0.1),
+            GW.space(12, 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: Text("Learn about How Seller Review Works in Zook App",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: Colors.blue),),
+            ),
+            GW.space(0, 4),
+            Padding(
+              padding: const EdgeInsets.all(13.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset("assets/security.png",width: 26,),
+                  SizedBox(width: 10,),
+                  Container(
+                    width: w-25-40,
+                    child:  Text("Feedbacks provided by verified Customers of RealMe Store"
+                      ,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+                  )
+                ],
+              ),
+            ),
+            GW.space(0, 6),
+            review(5,w, "Rajesh Mehta", "I ordered the Realme GT6 online; delivery was quick, the phone arrived exactly in the condition promised. Everything works smoothly—good display, solid performance, and it feels premium. Really satisfied with the purchase."),
+            review(3,w, "Priya Sharma", "Bought a Realme GT 7 Pro recently. Battery life is excellent, its speed is top-notch, and the price was very reasonable for what’s offered. Definitely the best phone I’ve had in this price range"),
+            review(4,w, "Amit Reddy", "My phone’s firmware update broke key features—after the update it started freezing, notifications don’t work properly, and customer support has been unresponsive. Still waiting for a fix"),
+            review(1,w, "Sneha Iyer", "errible experience with the Realme service centre. My phone frequently lags and at times becomes unresponsive."),
+            review(3,w, "Vikram Chauhan", "Received a Realme phone where the battery specification was misleading. The advertised battery capacity was higher, but when I checked the actual device, it was much lower."),
+            GW.space(0, 60),
             SizedBox(height: 90,),
           ],
         ),
@@ -305,6 +438,171 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
           ],
         )
       ],
+    );
+  }
+  Widget k(double w , String str, String str2)=> Container(
+    width: w,
+    child: Row(
+      children: [
+        SizedBox(width: 19,),
+        Container(
+          width: w/2-20,
+          child: Text(str,style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w900),),
+        ),
+        Container(
+          width: w/2-20,
+          child: Text(str2,style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500),),
+        ),
+      ],
+    ),
+  );
+
+  Widget review(int i,double w ,String desc, String title)=> Container(
+    width: w,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14.0,vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GW.buildStarRating(i,size: 20),
+          Text(title),
+          GW.space(0, 2),
+          Text("By $desc on 21st September, 2025",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w800),)
+        ],
+      ),
+    ),
+  );
+  Widget star(double w, String name, double rates){
+    double readrates= rates*100;
+    return    Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 13.0,vertical: 3),
+      child: Row(
+        children: [
+          Text("$name Star",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w600,fontSize: 17),),
+          GW.space(6, 0),
+          Container(
+            width: w-140,
+            height: 20,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                    color: Colors.grey.shade400,
+                    width: 1.2
+                )
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: (w-140)*rates,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      bottomLeft: Radius.circular(4),
+                    ),
+                  ),
+                ),
+                Spacer(),
+              ],
+            ),
+          ),
+          GW.space(6, 0),
+          Text("${readrates.toStringAsFixed(0)}%",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w600,fontSize: 17),),
+        ],
+      ),
+    );
+  }
+
+  Widget container(double w ){
+    return Container(
+      width: w,
+      height: w/3+150,
+      child: ListView.builder(
+        itemCount: GL.name.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 11.0),
+            child: InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (_)=>Full_Card_Product()));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 8),
+                        child: Container(
+                          width: w/3,height: w/3,
+                          decoration:BoxDecoration(
+                              image: DecorationImage(image: NetworkImage(GL.pic[index]))
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(width: w/3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(GL.name[index],style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700,fontSize: 13),maxLines: 2,),
+                          )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: GW.buildStarRating(4),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Text("${GW.generateRandomNumber(4)} Reviews",style: TextStyle(fontSize: 12,),),
+                    ),
+                    GW.space(0, 4),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: RichText(
+                          text: TextSpan(
+                            text: '-50%',
+                            style: TextStyle(color: Colors.red, fontSize: 16,fontWeight: FontWeight.w700),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: ' ₹7,499',
+                                style: TextStyle(fontWeight: FontWeight.bold, color:Colors.black,fontSize: 13),
+                              ),
+                            ],
+                          )
+                      ),
+                    ),
+                    GW.space(0, 4),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: RichText(
+                          text: TextSpan(
+                            text: 'MRP : ',
+                            style: TextStyle(color: Colors.black, fontSize: 11,fontWeight: FontWeight.w400),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '₹9,499',
+                                style: TextStyle(fontWeight: FontWeight.w400, color:Colors.black,fontSize: 11,decoration: TextDecoration.lineThrough),
+                              ),
+                            ],
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+
+      ),
     );
   }
 

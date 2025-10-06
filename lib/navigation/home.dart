@@ -8,6 +8,7 @@ import 'package:zook/Global/list.dart';
 import 'package:zook/Global/widgets.dart';
 import 'package:zook/cards/full_card_product.dart' show Full_Card_Product;
 
+import '../cards/order_details.dart';
 import '../cards/seller.dart';
 import '../second_pages/notification.dart' show Notifications;
 
@@ -94,20 +95,67 @@ class Home extends StatelessWidget {
                   children: [
                     Text("    Sells Statistics",style: TextStyle(fontWeight: FontWeight.w800),),
                     Spacer(),
-                    Container(
-                      width: (w-20)/2,
-                      height: 35,
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("This Week",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),
-                          SizedBox(width: 9,),
-                          Icon(Icons.expand_circle_down,color: Colors.white,)
-                        ],
+                    InkWell(
+                      onTap: (){
+                        showModalBottomSheet(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                          ),
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    leading: const Icon(Icons.calendar_view_week),
+                                    title: const Text("This Week"),
+                                    onTap: () {
+                                      Navigator.pop(context, "Week");
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.calendar_view_month),
+                                    title: const Text("This Month"),
+                                    onTap: () {
+                                      Navigator.pop(context, "Month");
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.calendar_today),
+                                    title: const Text("This Year"),
+                                    onTap: () {
+                                      Navigator.pop(context, "Year");
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ).then((value) {
+                          if (value != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("You selected: $value")),
+                            );
+                          }
+                        });
+                      },
+                      child: Container(
+                        width: (w-20)/2,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("This Week",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w700),),
+                            SizedBox(width: 9,),
+                            Icon(Icons.expand_circle_down,color: Colors.white,)
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -142,7 +190,70 @@ class Home extends StatelessWidget {
               padding: const EdgeInsets.all(19.0),
               child: Text("Recent Orders",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20),),
             ),
-
+            InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (_)=>OrderDetails()));
+              },
+              child: Container(
+                width: w,
+                height: 120,
+                child: ListView.builder(
+                  itemCount: 4,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Container(
+                        width: w-60,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GW.space(8, 0),
+                              Container(
+                                width: 80,height: 80,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(image: NetworkImage("https://m.media-amazon.com/images/I/41nTSR0PETL._SX300_SY300_QL70_FMwebp_.jpg"))
+                                ),
+                              ),
+                              GW.space(16, 0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Ghar Soaps Magic De-Tan",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 15),),
+                                  GW.space(0, 3),
+                                  Text("Price : ₹500.00",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                  Text("#89YIUD92    12 Sep, 2025",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Colors.grey),),
+                                  GW.space(0, 2),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Colors.orange.shade50,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 4),
+                                      child: Text("Pending",style: TextStyle(color: Colors.red),),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(19.0),
               child: Text("Your Top 10 Trending Products",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20),),

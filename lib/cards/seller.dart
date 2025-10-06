@@ -107,13 +107,20 @@ class SellerProfile extends StatelessWidget {
                     width: w/3,
                     height: 35,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: Colors.grey,width: 2
-                      )
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                            color: Colors.grey.shade500,width: 0.3
+                        )
                     ),
-                    child: Center(child: Text("12 Months ⬇️")),
-                  )
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("12 Months "),
+                        Icon(Icons.arrow_drop_down)
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 10,)
                 ],
               ),
             ),
@@ -150,6 +157,39 @@ class SellerProfile extends StatelessWidget {
             review(4,w, "Amit Reddy", "My phone’s firmware update broke key features—after the update it started freezing, notifications don’t work properly, and customer support has been unresponsive. Still waiting for a fix"),
             review(1,w, "Sneha Iyer", "errible experience with the Realme service centre. My phone frequently lags and at times becomes unresponsive."),
             review(3,w, "Vikram Chauhan", "Received a Realme phone where the battery specification was misleading. The advertised battery capacity was higher, but when I checked the actual device, it was much lower."),
+            GW.space(0, 12),
+            GW.div(),
+            GW.space(0, 6),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: Text("Return & Refund Policy",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 16,),),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: Text("Zook is committed to ensuring a smooth and worry-free shopping experience for its customers. If you receive a product that is defective, damaged, or different from what was described, you are eligible for a return or exchange within seven days of delivery. Once the returned item is received and inspected, a refund will be processed back to your original payment method. Certain items, such as perishable goods, personal care items, or products marked as non-returnable, may not qualify for returns. To initiate a return, customers can raise a request through the Zook app or contact our support team, and our logistics partners will assist with the pickup",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,),),
+            ),
+            GW.space(0, 12),
+            GW.div(),
+            GW.space(0, 6),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: Text("Shipping Policy",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 16,),),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: Text("At Zook, we aim to deliver your orders quickly and reliably. All orders are typically processed within one to two business days after they are placed. Standard delivery timelines range between three to seven business days, while express delivery (where available) ensures delivery within one to two business days. Customers can track the status of their orders directly in the Zook app under the “My Orders” section. While we strive to meet delivery timelines, unexpected events such as severe weather, logistical disruptions, or strikes may occasionally cause delays, in which case we will keep you informed.",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,),),
+            ),
+            GW.space(0, 12),
+            GW.div(),
+            GW.space(0, 6),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: Text("Other Policy",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 16,),),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: Text("Zook is dedicated to providing a transparent and secure shopping environment. All customer information is handled with strict confidentiality, and transactions are safeguarded with advanced encryption technologies. Prices and offers listed on the app are subject to change without prior notice, and promotional discounts may have specific terms and conditions. By using the Zook app, customers agree to abide by our terms of service and policies, which are designed to ensure fairness and safety for both buyers and sellers. We reserve the right to update or modify these policies from time to time, and any changes will be communicated on the platform.",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,),),
+            ),
             GW.space(0, 60),
           ],
         ),
