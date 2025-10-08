@@ -1,4 +1,6 @@
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
+import 'package:zook/Global/global_model.dart';
 import 'package:zook/cards/seller.dart';
 import 'package:zook/main.dart';
 import 'package:zook/second_pages/notification.dart';
@@ -45,7 +47,7 @@ class Profile extends StatelessWidget {
                 SizedBox(height: 35,),
                 InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>SellerProfile()));
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>SellerProfile(seller: Session.seller,)));
                   },
                   child: con(Colors.orange.shade50, "Seller Account",
                       Icon(Icons.person_outline_rounded,color: Colors.orange,)),
@@ -81,7 +83,8 @@ class Profile extends StatelessWidget {
                       Icon(Icons.info,color: Colors.blue,)),
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () async {
+                    await Amplify.Auth.signOut();
                     Navigator.push(context, MaterialPageRoute(builder: (_)=>MyHomePage(title: "")));
                   },
                   child: con(Colors.orange.shade50, "Log Out",

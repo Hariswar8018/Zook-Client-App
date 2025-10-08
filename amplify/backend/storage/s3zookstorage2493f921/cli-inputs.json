@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3zookstorage2493f921",
+  "bucketName": "zook-storage-2493f921",
+  "policyUUID": "f3683999",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

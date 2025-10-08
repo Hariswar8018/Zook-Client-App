@@ -13,7 +13,11 @@
     },
     "categories": {
       "auth": {
-        "zookb90f8a3b": {}
+        "zookb90f8a3b": {},
+        "zook": {}
+      },
+      "storage": {
+        "s3zookstorage2493f921": {}
       }
     }
   }

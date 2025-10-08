@@ -6,10 +6,22 @@ import 'dart:math' show Random, pow;
 
 import 'package:flutter/material.dart';
 
+import 'others.dart';
+
 class GW{
   static AppBar returnappbar(BuildContext context)=>AppBar(
     automaticallyImplyLeading: true,
 
+  );
+
+  static Widget button(String str,double w)=>Container(
+    width: w-15,
+    height: 50,
+    decoration: BoxDecoration(
+        color: Global.blue,
+        borderRadius: BorderRadius.circular(6)
+    ),
+    child: Center(child: Text(str,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800),)),
   );
 
   static Widget space(double w , double h)=>SizedBox(width: w,height: h,);

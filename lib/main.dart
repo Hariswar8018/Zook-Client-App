@@ -1,18 +1,36 @@
 import 'dart:async';
 
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_core/amplify_core.dart' show Amplify;
+import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_flutter/amplify_flutter.dart' hide Amplify;
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zook/login/login.dart';
+import 'package:zook/navigation/check.dart';
+import 'package:zook/main.dart' as np;
 
+import 'amplifyconfiguration.dart';
 import 'login/onboarding.dart';
 import 'package:flutter/material.dart';
+
+import 'models/ModelProvider.dart';
 
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Amplify.addPlugins([AmplifyAuthCognito()]);
+
+  final apiPlugin = AmplifyAPI(options: APIPluginOptions(
+    modelProvider: ModelProvider.instance
+  ));
+  final storage = AmplifyStorageS3();
+  final auth = AmplifyAuthCognito();
+  await Amplify.addPlugins([apiPlugin,auth,storage]);
+  await Amplify.configure(amplifyconfig);
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   runApp(const MyApp());
 }
@@ -24,7 +42,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Zook',
+      title: 'Zook Client',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
@@ -34,9 +52,9 @@ class MyApp extends StatelessWidget {
   }
 }
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title,this.email=""});
 
-  final String title;
+  final String title, email;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -47,10 +65,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void initState(){
       Timer(Duration(seconds: 3),(){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Onboarding()));
+        check();
       });
+  }
+
+  void getemail() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String email= await prefs.getString("email")??"";
+    print(email);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>SellerCheckScreen(email:email )));
 
   }
+
+  void check() async{
+    final result = await Amplify.Auth.fetchAuthSession();
+    print(result);
+    if(result.isSignedIn){
+      final user = await Amplify.Auth.getCurrentUser();
+      final username = user.username;
+      getemail();
+       return ;
+    }
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Onboarding()));
+  }
+
+  StoragePath paths(String s)=>StoragePath.fromString('public/$s');
 
   @override
   Widget build(BuildContext context) {

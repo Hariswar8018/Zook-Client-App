@@ -6,6 +6,7 @@ import 'package:zook/navigation/home.dart';
 import 'package:zook/navigation/orders.dart';
 import 'package:zook/navigation/products.dart';
 import 'package:zook/navigation/profile.dart';
+import 'package:zook/products/add.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -18,6 +19,8 @@ class _NavigationState extends State<Navigation> {
   int selected = 0;
   bool heart = false;
   final controller = PageController();
+
+
 
   @override
   void dispose() {
@@ -82,9 +85,7 @@ class _NavigationState extends State<Navigation> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            heart = !heart;
-          });
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductAdd()));
         },
         backgroundColor: Colors.white,
         child: Icon(

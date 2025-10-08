@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:zook/Global/widgets.dart';
+import 'package:zook/models/SellerModel.dart';
 
 import '../Global/list.dart';
 import 'full_card_product.dart';
 
 class SellerProfile extends StatelessWidget {
-  const SellerProfile({super.key});
+  final SellerModel seller;
+  const SellerProfile({super.key,required this.seller});
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +18,22 @@ class SellerProfile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(width: w,height:200, fit: BoxFit.cover,"https://m.media-amazon.com/images/S/stores-image-uploads-eu-prod/c/AmazonStores/A21TJRUUN4KGV/724b4e75bd0da57afa3506a83d4e95cc.w3000.h600._CR0%2C0%2C3000%2C600_SX1500_.png",),
+            Image.network(width: w,height:200, fit: BoxFit.cover,seller.banner??"https://m.media-amazon.com/images/S/stores-image-uploads-eu-prod/c/AmazonStores/A21TJRUUN4KGV/724b4e75bd0da57afa3506a83d4e95cc.w3000.h600._CR0%2C0%2C3000%2C600_SX1500_.png",),
             GW.space(0, 15),
             Container(
               width: w,
               child: Row(
                 children: [
                   GW.space(10, 0),
-                  Image.network("https://m.media-amazon.com/images/S/stores-image-uploads-eu-prod/9/AmazonStores/A21TJRUUN4KGV/ea1e1d593d17dbfd9b3a2b2147c6d041.w400.h400._CR0%2C0%2C400%2C400_SX200_.png",width: 80,height: 80,),
+                  Image.network(seller.logo??"https://m.media-amazon.com/images/S/stores-image-uploads-eu-prod/9/AmazonStores/A21TJRUUN4KGV/ea1e1d593d17dbfd9b3a2b2147c6d041.w400.h400._CR0%2C0%2C400%2C400_SX200_.png",width: 80,height: 80,),
                   GW.space(10, 0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("RealMe Store",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 19),),
+                      Text(seller.name!,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 19),),
                       Container(
                           width: w-20-90,
-                          child: Text(maxLines: 2,"ZOOK is a trusted mobile phone retailer offering the latest smartphones, accessories, and unbeatable deals. We connect customers with top brands, fast delivery, and excellent service—online and in-store."
-                            ,style: TextStyle(fontWeight: FontWeight.w400,color: Colors.grey),))
+                          child: Text(maxLines: 2,seller.description!,style: TextStyle(fontWeight: FontWeight.w400,color: Colors.grey),))
                     ],
                   ),
 
@@ -44,14 +45,14 @@ class SellerProfile extends StatelessWidget {
               children: [
                 GW.space(10, 0),
                 GW.buildStarRating(4,size: 20),
-                Text("  65% Positive ",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 16,),),
-                 ],
+                Text("  ${(seller.total_positive!/seller.total_rated!)*100}% Positive ",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 16,),),
+              ],
             ),
             Row(
               children: [
                 GW.space(10, 0),
                 Text(" in the last 12 months   ",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16),),
-                Text("( 2,130 Ratings )",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 16,color: Colors.blue),),
+                Text("( ${seller.total_rated} Ratings )",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 16,color: Colors.blue),),
               ],
             ),
             GW.space(0, 12),
@@ -64,8 +65,7 @@ class SellerProfile extends StatelessWidget {
             GW.space(0, 4),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 13.0),
-              child: Text("ZOOK is a trusted mobile phone retailer offering the latest smartphones, accessories, and unbeatable deals. We connect customers with top brands, fast delivery, and excellent service—online and in-store."
-                ,style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,),),
+              child: Text(seller.full_description!,style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,),),
             ),
             GW.space(0, 12),
             GW.div(),

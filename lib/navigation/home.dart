@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:zook/Global/global_model.dart';
 import 'package:zook/Global/list.dart';
 import 'package:zook/Global/widgets.dart';
 import 'package:zook/cards/full_card_product.dart' show Full_Card_Product;
@@ -29,7 +30,7 @@ class Home extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>SellerProfile()));
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>SellerProfile(seller: Session.seller,)));
             },
             child: CircleAvatar(
               backgroundColor: Colors.blue,
@@ -37,13 +38,13 @@ class Home extends StatelessWidget {
                 padding: EdgeInsets.all(1.0),
                 child: CircleAvatar(
                   backgroundImage:
-                  NetworkImage("https://cdn.vectorstock.com/i/500p/20/76/man-profile-icon-round-avatar-vector-21372076.jpg"),
+                  NetworkImage(Session.seller.logo??"https://cdn.vectorstock.com/i/500p/20/76/man-profile-icon-round-avatar-vector-21372076.jpg"),
                 ),
               ),
             ),
           ),
         ),centerTitle: true,
-        title: Text("Br Nr Innovations",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 15),),
+        title: Text(Session.seller.name!,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 15),),
         actions: [
           InkWell(
             onTap: (){

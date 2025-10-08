@@ -1,0 +1,84 @@
+type ProductModel @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  email: AWSEmail
+  brandname: String
+  name: String
+  buyed: Int
+  mrp: Int
+  sellingvlue: Int
+  lat: Float
+  lon: Float
+  company_name: String
+  shipername: String
+  boxcontent: String
+  description: String
+  fulldescription: String
+  isdiffrentiable: Boolean
+  arrayname: [String]
+  arrayamount: [Int]
+  arraymrp: [Int]
+  arraystocks: [Int]
+  totalstock: Int
+  picture: [String]
+  favorites: [String]
+  waitlist: [String]
+  uniqueid: String
+  categor: String
+  offer: Boolean
+  first: Boolean
+  totalbuyed: Int
+  firstadded: String
+  intss: Int
+  weight: Float
+  dimension: String
+}
+
+type SellerModel @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  uniqueid: String
+  banner: String
+  logo: String
+  name: String
+  description: String
+  full_description: String
+  rating_star: Float
+  total_rated: Int
+  total_positive: Int
+  joined: String
+  awsemail: AWSEmail
+  weblink: String
+  weblink1: String
+  gstnumber: String
+  gstpic: String
+  block: Boolean
+  review: Boolean
+  maxproducts: Int
+  top: Boolean
+  featuredproductid: String
+  adhaarid: String
+  adhaarpic: String
+  address: String
+  lat: Float
+  lon: Float
+  officer: String
+  address1: String
+  headquaters: String
+  headlat: Float
+  headlon: Float
+  mcaid: String
+  categories_applied: [String]
+  note: String
+  documnets: String
+}
+
+type UserModel @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Name: String
+  Email: String
+  Phone: String
+  orders: Int
+  purchased: Int
+  token: String
+  date: String
+}
+ 
