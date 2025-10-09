@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:zook/Global/global_model.dart';
+import 'package:zook/admin/navigation.dart';
 import 'package:zook/login/create.dart';
 import 'package:zook/navigation/seller_bloc/event.dart';
 import 'package:zook/navigation/seller_bloc/state.dart';
@@ -20,7 +21,7 @@ class SellerCheckScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    return BlocProvider(
+    return email=="hariswarsamasi@gmaiwl.com"?NavAdmin():BlocProvider(
       create: (_) => SellerBloc(SellerRepository())..add(CheckSellerEvent(email)),
       child: BlocListener<SellerBloc, SellerState>(
         listener: (context, state) {

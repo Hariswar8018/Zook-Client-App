@@ -1,13 +1,19 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:step_progress/step_progress.dart';
+import 'package:zook/Global/global_model.dart';
 import 'package:zook/Global/widgets.dart';
 
 import '../Global/others.dart';
 import '../Global/send.dart';
 
+class CardData {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+}
 class ProductAdd extends StatefulWidget {
   const ProductAdd({super.key});
 
@@ -19,7 +25,17 @@ class _ProductAddState extends State<ProductAdd> {
 
   late StepProgressController stepProgressController;
 
-  late List<Uint8List?> pictures ;
+   List<XFile?> pictures=[null] ;
+
+  Future<XFile?> pickImage(ImageSource source) async {
+    final ImagePicker _imagePicker = ImagePicker();
+    final XFile? _file = await _imagePicker.pickImage(source: source);
+    if (_file != null) {
+      return _file;
+    }
+    print('No Image Selected');
+    return null;
+  }
 
 
   @override
@@ -30,14 +46,6 @@ class _ProductAddState extends State<ProductAdd> {
 
   void onUpdate(){
     stepProgressController = StepProgressController(totalSteps: 5);
-  }
-  pickImage(ImageSource source) async {
-    final ImagePicker _imagePicker = ImagePicker();
-    XFile? _file = await _imagePicker.pickImage(source: source);
-    if (_file != null) {
-      return await _file.readAsBytes();
-    }
-    print('No Image Selected');
   }
   @override
   void dispose() {
@@ -166,52 +174,21 @@ class _ProductAddState extends State<ProductAdd> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        t("Which Company Type you are in MSME ?"),
-        SizedBox(height: 5,),
-        Center(
-          child: Container(
-            width: w - 20,
-            height: 45,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey.shade200,
-              ),
-              color: Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(5), // Optional rounded corners
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0),
-              child: DropdownButtonHideUnderline( // Removes underline
-                child: DropdownButton<String>(
-                  isExpanded: true, // Makes dropdown fill the width
-                  hint: Text("Select a Time"),
-                  value: selectedValue,
-                  items: items.map((String item) {
-                    return DropdownMenuItem<String>(
-                      value: item,
-                      child: Text(item),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedValue = newValue!;
-                    });
-                  },
-                ),
-              ),
-            ),
-          ),
-        ),
+        t("Total Stocks"),
+        t1("Please Type the Total Stocks you have "),
+        te(w, name,"1000",no: true),
         SizedBox(height: 10,),
-        t("Your Phone Number"),
-        t1("Please Write Your Phone Number to reach you"),
-        te(w, phone,"7978097489"),
-        t("Your Fax Number ( Optional ) "),
-        t1("Please Write your FAX number to send Receipts"),
-        te(w, fax,"91-555-123-4567"),
-        t("Your Email Address"),
-        t1("Please write your Company Email "),
-        te(w, email,"contact@ctai.in"),
+        t("Your Products Pictures"),
+        t1("Please Add Products Picture"),
+        SizedBox(height: 10,),
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: List.generate(
+            pictures.length,
+                (index) => _buildImagePicker(w, index, square: true),
+          ),
+        )
       ],
     );
   }
@@ -225,15 +202,18 @@ class _ProductAddState extends State<ProductAdd> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        t("Company/LLP Name"),
-        t1("Please Type Exact Name appearing in GST"),
-        te(w, name,"TechNova Pvt. Ltd. "),
-        t("Description"),
+        t("Product Name"),
+        t1("Please Type your Product Name ( As long as you want ) "),
+        te(w, name,"Realme NARZO 80 | Lite 4G | 6300mAh Segment's Biggest Battery | 7.94mm Slim Design | 300% Ultra Volume"),
+        t("Brand Name"),
+        t1("Please Type the Company Brand Name"),
+        te(w, name,"Realme"),
+        t("Selling Price"),
         t1("Write a Small Description for your Business"),
-        te(w, desc,"TechNova Solutions is a leading software development company specializing in innovative digital solutions"),
-        t("Long Description"),
+        te(w, no:true,desc,"1000"),
+        t("MRP Price"),
         t1("You could write as Long Description you want"),
-        te(w, full_desc,"TechNova Solutions is a premier software development company committed to delivering cutting-edge technology solutions to businesses worldwide. With a team of skilled developers, designers, and strategists, the company focuses on creating custom software, mobile applications, and web platforms tailored to meet each client’s unique needs",desc: true),
+        te(w, no:true,full_desc,"2000"),
       ],
     );
   }
@@ -241,15 +221,21 @@ class _ProductAddState extends State<ProductAdd> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        t("GST Number"),
+        t("Weight of Product"),
+        t1("Please Type Exact GST Number"),
+        te(w, gst,"50 kg",no: true),
+        t("Dimension of Product ( Width x Height )"),
+        t1("Please Type what you will send with the Products"),
+        te(w, web1,"100 x 10"),
+        t("Short Description"),
         t1("Please Type Exact GST Number"),
         te(w, gst,"SJSJJW91"),
-        t("Your Web/Social Link "),
-        t1("Give any Social or your Own Website Link"),
+        t("Box Contains"),
+        t1("Please Type what you will send with the Products"),
         te(w, web1,"https://ayusdev.in"),
-        t("Your Web/Social Link2"),
-        t1("( Optional ) Give any more relevant Social/Website Link"),
-        te(w, web2,"https://facebook.com/pune-street-food"),
+        t("Long Description"),
+        t1("Please Type a Long Description for your Product"),
+        te(w, web2,"https://facebook.com/pune-street-food",desc: true),
       ],
     );
   }
@@ -259,26 +245,101 @@ class _ProductAddState extends State<ProductAdd> {
       children: [
         Row(
           children: [
-            !isSwitched?Icon(Icons.camera_alt):Icon(Icons.image_search_rounded),
+            !issmall?Icon(Icons.production_quantity_limits):Icon(Icons.production_quantity_limits),
             SizedBox(width: 5,),
-            t("Use Camera to Click Pictures ?"),
+            t("Is the Product have Variants ?"),
             Switch(
-              value: !isSwitched,
+              value: issmall,
               activeColor: Colors.green,
-
               onChanged: (bool value) {
                 setState(() {
-                  isSwitched = !value; // Update the boolean
+                  issmall = value; // Update the boolean
                 });
               },
             ),
           ],
         ),
-        t("Upload Banner Image"),
-        t1("Please Upload a Banner Image for your Seller Account ( 1080 x 720 )"),
+        t("Add Product Variant"),
+        t1("Please Add Product Variants if you have selected the Variants"),
+        SizedBox(height: 9,),
+        issmall?InkWell(
+          onTap: addCard,
+          child: Container(
+            width: w-10,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.grey.shade100
+            ),
+            child: Center(child: Text("+  Add 1 more Variant")),
+          ),
+        ):SizedBox(),
+        !issmall?SizedBox():cards.isEmpty
+            ? const Center(child: Text("No cards yet"))
+            : Container(
+          width: w,height: 360,
+              child: ListView.builder(
+                        itemCount: cards.length,
+                        itemBuilder: (context, index) {
+              final card = cards[index];
+              return Card(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Product Variant ${index + 1}", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => removeCard(index),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      te(w, no:true,card.titleController,"Type ${index==0?"Default ":""}Variant    Example - Size XL"),
+                      const SizedBox(height: 8),
+                      index==0?Padding(
+                        padding: const EdgeInsets.only(left: 10.0,bottom: 8),
+                        child: Text("+₹0",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 18),),
+                      ):te(w, no:true,card.descController,"Type the Extra Price : +${index+1}000"),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                ),
+              );
+              },
+              ),
+            ),
+
       ],
     );
   }
+  List<CardData> cards = [];
+
+  void addCard() {
+    setState(() {
+      cards.add(CardData());
+    });
+  }
+
+  void removeCard(int index) {
+    setState(() {
+      cards.removeAt(index);
+    });
+  }
+
+  void saveAll() {
+    for (final card in cards) {
+      print("Title: ${card.titleController.text}");
+      print("Description: ${card.descController.text}");
+    }
+  }
+  bool issmall=false;
 
   Widget im(double w,{bool square = false,int i= 0})=>Padding(
     padding: const EdgeInsets.only(top: 6.0,bottom: 15),
@@ -299,19 +360,51 @@ class _ProductAddState extends State<ProductAdd> {
     ),
   );
   bool isSwitched = false;
-  Widget _buildImageContainer(Uint8List? imageData,double w,{bool square=false}) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 6.0,bottom: 15),
-      child: Container(
-        width: square?w/4:w/3,
-        height: square?w/4:(w/3)*9/16,
+  Widget _buildImagePicker(double w, int index, {bool square = false}) {
+    return InkWell(
+      onTap: () async {
+        XFile? file = await pickImage(ImageSource.gallery); // or camera
+        if (file != null) {
+          setState(() {
+            pictures[index] = file;
+
+            // If last slot filled, add a new empty slot
+            if (index == pictures.length - 1) {
+              pictures.add(null);
+            }
+          });
+        }
+      },
+      child: pictures[index] == null
+          ? Container(
+        width: square ? w / 4 : w / 3,
+        height: square ? w / 4 : (w / 3) * 9 / 16,
         decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-                color: Colors.grey.shade400
-            ),
-            image: DecorationImage(image: MemoryImage(imageData!),fit: BoxFit.cover)
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: Colors.grey.shade400),
+        ),
+        child: const Icon(Icons.add_a_photo, color: Colors.grey),
+      )
+          : _buildImageContainer(pictures[index], w, square: square),
+    );
+  }
+
+  Widget _buildImageContainer(XFile? imageFile, double w, {bool square = false}) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 6.0, bottom: 15),
+      child: Container(
+        width: square ? w / 4 : w / 3,
+        height: square ? w / 4 : (w / 3) * 9 / 16,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: Colors.grey.shade400),
+          image: imageFile == null
+              ? null : DecorationImage(
+            image: FileImage(File(imageFile.path)),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
@@ -357,6 +450,11 @@ class _ProductAddState extends State<ProductAdd> {
       setState(() {
         progress=true;
       });
+      for (var item in cards) {
+        print("Title: ${item.titleController}");
+        print("Description: ${item.descController}");
+      }
+
     }catch(e){
 
     }
@@ -378,8 +476,32 @@ class _ProductAddState extends State<ProductAdd> {
         Text("Create your seller account and reach thousands of buyers instantly. List your products, manage orders easily, and grow your business—all in one place. Join Zook today and start earning like top online sellers!"
           ,style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
         SizedBox(height: 20,),
+        Session.seller.review!?Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: Container(
+            width: w-5,
+            color: Colors.red,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Icon(Icons.warning,color: Colors.white,),
+                  ),
+                  Container(
+                    width: w-100,
+                    child: Text("Your Seller Profile is Still not Approved ! You could wait or try Contacting Us",
+                      style: TextStyle(fontWeight:FontWeight.w500,fontSize: 13,color: Colors.white),),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ):SizedBox(),
         Text("Documents to be Handy : "
           ,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 18),),
+
         SizedBox(height: 5,),
         col(w, "assets/product.webp", "Product Info", "Your Product Info, Picture, Description"),
         col(w, "assets/warehouse.webp", "WareHouse Details", "To Estimate & Take the Shipping"),
@@ -393,9 +515,13 @@ class _ProductAddState extends State<ProductAdd> {
               value: isChecked,checkColor: Colors.white,
               activeColor: Global.blue,
               onChanged: (bool? value) {
-                setState(() {
-                  isChecked = value!;
-                });
+                if(!Session.seller.review!){
+                  setState(() {
+                    isChecked = value!;
+                  });
+                }else{
+                  Send.message(context, "Your Account is Still not Approved", false);
+                }
               },
             ),
             Container(

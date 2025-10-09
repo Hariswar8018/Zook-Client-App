@@ -1,3 +1,6 @@
+
+
+
 class GL{
 
 
@@ -24,4 +27,22 @@ class GL{
     "https://m.media-amazon.com/images/I/7120H5WUJYL._SX679_.jpg",
     "https://m.media-amazon.com/images/I/41-mIUstsvL.jpg",
   ];
+
+  static List<String> logo =[
+    "assets/logo/mobiles.webp",
+    "assets/logo/application.webp",
+    "assets/logo/fashion.webp",
+    "assets/logo/grocery.webp",
+    "assets/logo/home.webp",
+    "assets/logo/kids.webp",
+    "assets/logo/tv.webp",
+    "assets/logo/furniture.webp"
+  ];
+  static List<String> logoname =[
+    "Mobiles",
+    "Applications","Fashion","Grocery",
+    "Kitchen","Kids","Electronics","Furniture"
+  ];
+
+
 }

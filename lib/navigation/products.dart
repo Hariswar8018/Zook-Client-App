@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zook/cards/full_card_product.dart';
 
+import '../Global/list.dart';
+
 class Products extends StatelessWidget {
    Products({super.key});
 
@@ -25,7 +27,7 @@ class Products extends StatelessWidget {
             Container(
               width: w,height: 100,
               child: ListView.builder(
-                itemCount: logo.length,
+                itemCount: GL.logo.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
@@ -35,11 +37,11 @@ class Products extends StatelessWidget {
                         Container(
                           width: 70,height: 70,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(image: AssetImage(logo[index]))
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(image: AssetImage(GL.logo[index]))
                           ),
                         ),
-                        Text(logoname[index],style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),)
+                        Text(GL.logoname[index],style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),)
                       ],
                     ),
                   );
@@ -218,21 +220,7 @@ class Products extends StatelessWidget {
       ),
     );
   }
-  List<String> logo =[
-    "assets/logo/mobiles.webp",
-    "assets/logo/application.webp",
-    "assets/logo/fashion.webp",
-    "assets/logo/grocery.webp",
-    "assets/logo/home.webp",
-    "assets/logo/kids.webp",
-    "assets/logo/tv.webp",
-    "assets/logo/furniture.webp"
-  ];
-   List<String> logoname =[
-     "Mobiles",
-     "Applications","Fashion","Grocery",
-     "Kitchen","Kids","Electronics","Furniture"
-   ];
+
   Widget buildStarRating(int i, {double size = 15, Color filledColor = Colors.orange, Color borderColor = Colors.grey}) {
     return Row(
       mainAxisSize: MainAxisSize.min,
