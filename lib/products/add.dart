@@ -1,12 +1,18 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:amplify_api/amplify_api.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_progress/step_progress.dart';
 import 'package:zook/Global/global_model.dart';
 import 'package:zook/Global/widgets.dart';
+import 'package:zook/models/ProductModel.dart';
+import 'package:zook/navigation/check.dart';
 
+import '../Global/list.dart';
 import '../Global/others.dart';
 import '../Global/send.dart';
 
@@ -72,9 +78,16 @@ class _ProductAddState extends State<ProductAdd> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
-                  child: Text("Add a Product",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 22),),
+                InkWell(
+                  onLongPress: (){
+                    setState(() {
+                      progress=false;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Text("Add a Product",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 22),),
+                  ),
                 ),
                 SizedBox(height: 10,),
                 Row(
@@ -82,14 +95,23 @@ class _ProductAddState extends State<ProductAdd> {
                     SizedBox(width: 10,),
                     Icon(Icons.support_agent),SizedBox(width: 5,),
                     Text(" Support at : +91-7978097489"),SizedBox(width: 5,),
-                    Icon(Icons.keyboard_arrow_down_outlined)
+                    Icon(Icons.keyboard_arrow_down_outlined),
+                    progress?CircularProgressIndicator():SizedBox(),
+                    SizedBox(width: 5,),
+                    progress?Text("${(uploadProgress*100).toStringAsFixed(1)}% Uploaded"):SizedBox()
                   ],
                 ),
                 SizedBox(height: 14,)
               ],
             ),
           ),
-          progress?LinearProgressIndicator():SizedBox(),
+          LinearProgressIndicator(
+            value: uploadProgress, // must be between 0.0 and 1.0
+            minHeight: 4,
+            backgroundColor: Colors.grey.shade200,
+            color: Colors.orange,
+            borderRadius: BorderRadius.circular(10),
+          ),
           Container(
             width: w,
             height: 80,
@@ -115,7 +137,7 @@ class _ProductAddState extends State<ProductAdd> {
           SizedBox(height: 10),
           Container(
               width: w,
-              height: h-230-48,
+              height: h-230-52,
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 14.0),
@@ -176,7 +198,7 @@ class _ProductAddState extends State<ProductAdd> {
       children: [
         t("Total Stocks"),
         t1("Please Type the Total Stocks you have "),
-        te(w, name,"1000",no: true),
+        te(w, stocks,"1000",no: true),
         SizedBox(height: 10,),
         t("Your Products Pictures"),
         t1("Please Add Products Picture"),
@@ -207,13 +229,13 @@ class _ProductAddState extends State<ProductAdd> {
         te(w, name,"Realme NARZO 80 | Lite 4G | 6300mAh Segment's Biggest Battery | 7.94mm Slim Design | 300% Ultra Volume"),
         t("Brand Name"),
         t1("Please Type the Company Brand Name"),
-        te(w, name,"Realme"),
+        te(w, brand,"Realme"),
         t("Selling Price"),
-        t1("Write a Small Description for your Business"),
-        te(w, no:true,desc,"1000"),
+        t1("Write the Amount customers will buy in Zook App"),
+        te(w, no:true,selling,"1000"),
         t("MRP Price"),
-        t1("You could write as Long Description you want"),
-        te(w, no:true,full_desc,"2000"),
+        t1("Write the Actual Amount the product was off"),
+        te(w, no:true,mrp,"2000"),
       ],
     );
   }
@@ -222,20 +244,20 @@ class _ProductAddState extends State<ProductAdd> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         t("Weight of Product"),
-        t1("Please Type Exact GST Number"),
-        te(w, gst,"50 kg",no: true),
+        t1("Please Type Weight in Gram"),
+        te(w, weight,"50 g",no: true),
         t("Dimension of Product ( Width x Height )"),
-        t1("Please Type what you will send with the Products"),
-        te(w, web1,"100 x 10"),
-        t("Short Description"),
-        t1("Please Type Exact GST Number"),
-        te(w, gst,"SJSJJW91"),
+        t1("Please Type Package width and height"),
+        te(w, dim,"100 x 10"),
+        t("Description"),
+        t1("Please Type Description for App"),
+        te(w, desc,"SJSJJW91",desc: true),
         t("Box Contains"),
         t1("Please Type what you will send with the Products"),
-        te(w, web1,"https://ayusdev.in"),
+        te(w, box,"Mobile, 1 Charger, 1 Data Cable, 1 Manual"),
         t("Long Description"),
         t1("Please Type a Long Description for your Product"),
-        te(w, web2,"https://facebook.com/pune-street-food",desc: true),
+        te(w, full_desc,"https://facebook.com/pune-street-food",desc: true),
       ],
     );
   }
@@ -301,7 +323,7 @@ class _ProductAddState extends State<ProductAdd> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      te(w, no:true,card.titleController,"Type ${index==0?"Default ":""}Variant    Example - Size XL"),
+                      te(w, card.titleController,"Type ${index==0?"Default ":""}Variant    Example - Size XL"),
                       const SizedBox(height: 8),
                       index==0?Padding(
                         padding: const EdgeInsets.only(left: 10.0,bottom: 8),
@@ -413,11 +435,17 @@ class _ProductAddState extends State<ProductAdd> {
   TextEditingController name=TextEditingController();
   TextEditingController desc=TextEditingController();
   TextEditingController full_desc=TextEditingController();
-  TextEditingController web1=TextEditingController();
-  TextEditingController web2= TextEditingController();
-  TextEditingController gst=TextEditingController();
+  TextEditingController brand=TextEditingController();
+  TextEditingController selling= TextEditingController();
+  TextEditingController mrp=TextEditingController();
 
-  Widget te(double w,TextEditingController controller, String hint,{ bool no = false,bool desc=false})=>Padding(
+  TextEditingController weight = TextEditingController();
+  TextEditingController dim = TextEditingController();
+  TextEditingController box=TextEditingController();
+  TextEditingController stocks = TextEditingController();
+
+  Widget te(double w,TextEditingController controller, String hint,{ bool no = false,bool desc=false
+  })=>Padding(
     padding: const EdgeInsets.only(top: 5.0,bottom: 16),
     child: Container(
       width : w  , height : desc?140:50,
@@ -433,6 +461,7 @@ class _ProductAddState extends State<ProductAdd> {
               controller: controller,
               minLines: desc?5:1,
               maxLines: desc?100:1,
+              readOnly: progress,
               decoration: InputDecoration(
                 hintText: hint,
                 isDense: true,
@@ -450,17 +479,101 @@ class _ProductAddState extends State<ProductAdd> {
       setState(() {
         progress=true;
       });
-      for (var item in cards) {
-        print("Title: ${item.titleController}");
-        print("Description: ${item.descController}");
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String email = await prefs.getString("email")??"";
+      if(pictures.isEmpty){
+        Send.message(context, "Atleast Upload 1 Picture !", false);
+        setState(() {
+          progress=false;
+        });
+        return ;
       }
 
-    }catch(e){
+      List<String> titles=[]; List<int> amount=[];
+      if(issmall){
+        amount.add(0);
+        for (var item in cards) {
+          print("Title: ${item.titleController}");
+          titles.add(item.titleController.text);
+          print("Description: ${item.descController}");
+          amount.add(int.parse(item.descController.text));
+        }
+      }else{
 
+      }
+      int mrpint = int.parse(mrp.text);
+      int amountprice = int.parse(selling.text);
+      int weights = int.parse(weight.text);
+      int stocksint=int.parse(stocks.text);
+
+      if(mrpint<=amountprice){
+        Send.message(context, "Selling price should be less than Amount", false);
+        setState(() {
+          progress=false;
+        });
+        return ;
+      }
+      List<String> pic=[];
+      for (var pics in pictures){
+        try {
+          String gh = await uploadpic(pics!);
+          pic.add(gh);
+        }catch(e){
+
+        }
+      }
+      final model = ProductModel(
+              email: email,
+              brandname: brand.text,
+              name:name.text,
+              buyed: 0,
+              mrp: mrpint,
+              sellingvlue: amountprice,
+              lat: 123.45,
+              lon: 123.45,
+              company_name: "${Session.seller.name}",
+              shipername: "${Session.seller.address1}",
+              boxcontent: box.text,
+              description: desc.text,
+              fulldescription: full_desc.text,
+              isdiffrentiable: issmall,
+              arrayname: titles,
+              arrayamount: amount,
+              arraymrp: amount,
+              arraystocks: [],
+              totalstock: stocksint,
+              picture: pic,
+              favorites: [],
+              waitlist: [],
+              uniqueid: "",
+              categor: cat,
+              offer: true,
+              first: true,
+              totalbuyed: 0,
+              firstadded: DateTime.now().toString(),
+              intss: 0,
+              weight: weights.toDouble(),
+              dimension: dim.text
+      );
+          final request = ModelMutations.create(model);
+          final response = await Amplify.API.mutate(request: request).response;
+          final createdProductModel = response.data;
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>SellerCheckScreen(email: email)));
+          print(model.toJson());
+          setState(() {
+            progress=false;
+          });
+    }catch(e){
+      setState(() {
+        progress=false;
+      });
+      Send.message(context, "$e", false);
+      print(e);
     }
   }
 
 
+  String cat = "Mobiles";
 
   Widget t(String str)=>Text(str
     ,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 18),);
@@ -476,6 +589,43 @@ class _ProductAddState extends State<ProductAdd> {
         Text("Create your seller account and reach thousands of buyers instantly. List your products, manage orders easily, and grow your business—all in one place. Join Zook today and start earning like top online sellers!"
           ,style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
         SizedBox(height: 20,),
+        Text("Categories of your Product : "
+          ,style: TextStyle(fontWeight: FontWeight.w800,fontSize: 18),),
+        Container(
+          width: w,height: 100,
+          child: ListView.builder(
+            itemCount: GL.logo.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: (){
+                  cat=GL.logoname[index];
+                  setState(() {
+
+                  });
+                },
+                child: Container(
+                  width: 80,height: 100,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 70,height: 70,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: (cat==GL.logoname[index])?Colors.blue:Colors.white,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(image: AssetImage(GL.logo[index],),opacity:(cat==GL.logoname[index])?1:0.3)
+                        ),
+                      ),
+                      Text(GL.logoname[index],style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),)
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
         Session.seller.review!?Padding(
           padding: const EdgeInsets.only(bottom: 15.0),
           child: Container(
@@ -617,4 +767,41 @@ class _ProductAddState extends State<ProductAdd> {
       ),
     );
   }
+  double uploadProgress=0.0;
+  Future<String> uploadpic(XFile file)async{
+    try {
+      final File imageFile = File(file.path);
+      final String fileName = 'public/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
+      final awsFile = AWSFile.fromPath(file.path);
+      final uploadResult = await Amplify.Storage
+          .uploadFile(
+        localFile: awsFile,
+        path: StoragePath.fromString(fileName),
+        options: const StorageUploadFileOptions(
+          // or authenticated
+        ),
+        onProgress: (progress) {
+          final fractionCompleted =
+              progress.transferredBytes / progress.totalBytes;
+          setState(() {
+            uploadProgress = fractionCompleted;
+          });
+          print("Progress: ${(fractionCompleted * 100).toStringAsFixed(2)}%");
+        },
+      )
+          .result;
+      print('✅ Uploaded file key: ${uploadResult.uploadedItem.path}');
+      return uploadResult.uploadedItem.path;
+      final urlResult = await Amplify.Storage.getUrl(
+        path: StoragePath.fromString(
+            uploadResult.uploadedItem.path),
+      );
+      final getUrlResult1 = await urlResult.result;
+      final downloadUrl1 = getUrlResult1.url.toString();
+      return downloadUrl1;
+    }catch(e){
+      return e.toString();
+    }
+  }
+
 }

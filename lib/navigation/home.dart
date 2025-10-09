@@ -464,3 +464,4 @@ class SalesData {
   final DateTime year;
   final double sales;
 }
+
