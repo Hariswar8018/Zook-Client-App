@@ -258,7 +258,7 @@ class _ProductCardState extends State<ProductCard> {
     double w = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (_)=>Full_Card_Product()));
+        Navigator.push(context, MaterialPageRoute(builder: (_)=>Full_Card_Product(product: widget.product,)));
       },
       child: Container(
         color: Colors.white,

@@ -1,20 +1,52 @@
 import 'package:carousel_slider/carousel_options.dart' show CarouselOptions;
 import 'package:carousel_slider/carousel_slider.dart' show CarouselSlider;
 import 'package:flutter/material.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart' show Razorpay;
 import 'package:zook/Global/others.dart';
+import 'package:zook/models/ModelProvider.dart';
 
+import '../Global/functions.dart';
 import '../Global/list.dart';
 import '../Global/widgets.dart';
 
 class Full_Card_Product extends StatefulWidget {
- Full_Card_Product({super.key});
+  ProductModel product;
+ Full_Card_Product({super.key,required this.product});
 
   @override
   State<Full_Card_Product> createState() => _Full_Card_ProductState();
 }
 
 class _Full_Card_ProductState extends State<Full_Card_Product> {
+
+  void initState(){
+    getimage();
+  }
+  String pic="https://static.vecteezy.com/system/resources/thumbnails/004/683/178/small/icon-broken-image-glyph-style-simple-illustration-editable-stroke-free-vector.jpg";
+
+   List<String> pics=[];
+  Future<void> getimage() async {
+    try {
+      for(var i in widget.product.picture!){
+        String inpic = await GlobalFunctions.getpicsfrompath(i);
+        if (inpic.isNotEmpty || inpic != "NA") {
+          pics.add(inpic);
+        } else {
+          pics.add(pic);
+        }
+      }
+      setState(() {
+        bool d=false;
+      });
+    }catch(e){
+      pic =
+      "https://static.vecteezy.com/system/resources/thumbnails/004/683/178/small/icon-broken-image-glyph-style-simple-illustration-editable-stroke-free-vector.jpg";
+
+    }
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -38,7 +70,7 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
                     autoPlay: true,
                     autoPlayInterval: Duration(seconds: 5)
                 ),
-                items: offer.map((i) {
+                items: pics.map((i) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
@@ -84,7 +116,7 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Samsung Store",style: TextStyle(fontWeight: FontWeight.w800),),
+                    Text(widget.product.brandname!,style: TextStyle(fontWeight: FontWeight.w800),),
                     Text("Visit the Store",style: TextStyle(fontWeight: FontWeight.w500,color: Colors.blue),)
                   ],
                 ),
@@ -97,26 +129,26 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
             ),
             Padding(
               padding: const EdgeInsets.all(19.0),
-              child: Text("Samsung Galaxy M06 5G (Blazing Black, 6GB RAM, 128 GB Storage) | MediaTek Dimensity 6300 | AnTuTu Score 422K+ | 12 5G Bands | 25W Fast Charging | 4 Gen of OS Upgrades | Without Charger",
+              child: Text(widget.product.name!,
                 style: TextStyle(fontWeight: FontWeight.w500,fontSize: 15),),
             ),
-            Padding(
+            widget.product.totalbuyed==0?SizedBox():Padding(
               padding: const EdgeInsets.symmetric(horizontal: 19.0),
-              child: Text("2K+ Bought in last month ",
+              child: Text("${widget.product.totalbuyed}K+ Bought in last month ",
                 style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w800,fontSize: 13),),
             ),
             SizedBox(height: 15,),
             div(),
             SizedBox(height: 15,),
-            Row(
+            widget.product.isdiffrentiable!?Row(
               children: [
                 SizedBox(width: 19,),
-                Text("Size :"),
+                Text("Variant :"),
                 Text("6 GB RAM, 128 GB Storage",style: TextStyle(fontWeight: FontWeight.w600),),
               ],
-            ),
-            SizedBox(height: 10,),
-            Container(
+            ):SizedBox(),
+            widget.product.isdiffrentiable!?SizedBox(height: 10,):SizedBox(),
+            widget.product.isdiffrentiable!?Container(
               width: w,
               height: w/4+30,
               child: ListView.builder(
@@ -126,20 +158,20 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
                   return conta(w,index,index==0?temporary:!temporary);
                 },
               ),
-            ),
-            SizedBox(height: 20,),
+            ):SizedBox(),
+            widget.product.isdiffrentiable!?SizedBox(height: 20,):SizedBox(),
             Row(
               children: [
                 SizedBox(width: 19,),
-                Text("- 42%",style: TextStyle(color: Colors.red,fontWeight: FontWeight.w800,fontSize: 18),),
-                Text(" ₹8,000",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800,fontSize: 26),),
+                Text("- ${((widget.product.sellingvlue!/widget.product.mrp!)*100).toInt()}%",style: TextStyle(color: Colors.red,fontWeight: FontWeight.w800,fontSize: 18),),
+                Text(" ₹${widget.product.sellingvlue}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800,fontSize: 26),),
               ],
             ),
             Row(
               children: [
                 SizedBox(width: 19,),
                 Text("MRP : ",style: TextStyle(color: Colors.grey.shade500,fontWeight: FontWeight.w800,fontSize: 12),),
-                Text("₹15,499", overflow: TextOverflow.clip,style: TextStyle(decoration: TextDecoration.lineThrough,color: Colors.grey.shade500,fontWeight: FontWeight.w800,fontSize: 12),),
+                Text("₹${widget.product.mrp}", overflow: TextOverflow.clip,style: TextStyle(decoration: TextDecoration.lineThrough,color: Colors.grey.shade500,fontWeight: FontWeight.w800,fontSize: 12),),
               ],
             ),
             SizedBox(height: 10,),
@@ -167,7 +199,7 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
               children: [
                 SizedBox(width: 19,),
                 Text("EMI ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800,fontSize: 12),),
-                Text("from ₹327. No Cost EMI Available ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400,fontSize: 12),),
+                Text("from ₹${widget.product.sellingvlue!*0.5.toInt()}. No Cost EMI Available ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400,fontSize: 12),),
                 ],
             ),
             Padding(
@@ -188,7 +220,7 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
               children: [
                 SizedBox(width: 19,),
                 Text("Total : ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800,fontSize: 14),),
-                Text("₹8,000",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900,fontSize: 17),),
+                Text("₹${widget.product.sellingvlue}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900,fontSize: 17),),
               ],
             ),
             SizedBox(height: 10,),
@@ -205,7 +237,7 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
               children: [
                 SizedBox(width: 19,),
                 Text("Order Within ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400,fontSize: 14),),
-                Text(" 4 hr 20 mins",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700,fontSize: 14),),
+                Text(" ${getTimeLeftTo5PM()}",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700,fontSize: 14),),
               ],
             ),
             SizedBox(height: 10,),
@@ -257,7 +289,7 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
                   width: w/2-25,
                   child: Text("Sold by"),
                 ),
-                Text("Darshita. Etl. ",style: TextStyle(fontWeight: FontWeight.w800),),
+                Text("${widget.product.company_name}",style: TextStyle(fontWeight: FontWeight.w800),),
               ],
             ),
             SizedBox(height: 20,),
@@ -319,7 +351,7 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 19.0,right: 19),
-              child: Text("90W Charger, Type C USB Cable, Sim Eject Tool, Protective Case, Quick Start Guide, Warranty Card?"
+              child: Text(widget.product.boxcontent!
                 ,style: TextStyle(fontWeight: FontWeight.w700,fontSize: 14,color: Colors.grey),),
             ),
             SizedBox(height: 20,),
@@ -406,20 +438,6 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             InkWell(
-              onTap:(){
-                Razorpay _razorpay = Razorpay();
-                var options = {
-                  'key': 'rzp_test_RIFjcoGeZrQTCR',
-                  'amount': 800000,
-                  'name': 'ZOOK App Samsung Galaxy Purchase',
-                  'description': 'Fine T-Shirt',
-                  'prefill': {
-                    'contact': '+917978097489',
-                    'email': 'ayush@razorpay.com'
-                  }
-                };
-                _razorpay.open(options);
-              },
               child: Container(
                 width: w-80,
                 height: 50,
@@ -456,6 +474,40 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
       ],
     ),
   );
+
+  String? getTimeLeftTo5PM() {
+    final now = DateTime.now();
+
+    // Define today’s 5:00 PM
+    final today5PM = DateTime(now.year, now.month, now.day, 17, 0);
+
+    // Define today’s 4:50 PM
+    final today4_50PM = DateTime(now.year, now.month, now.day, 16, 50);
+
+    DateTime targetTime;
+
+    if (now.isAfter(today5PM)) {
+      // If it's after 5 PM, target is 5 PM of next day
+      targetTime = today5PM.add(const Duration(days: 1));
+    } else {
+      // If before 5 PM, target is today’s 5 PM
+      targetTime = today5PM;
+    }
+
+    // If time is after 4:50 PM but before 5 PM → return nothing
+    if (now.isAfter(today4_50PM) && now.isBefore(today5PM)) {
+      return null;
+    }
+
+    // Calculate the duration difference
+    final difference = targetTime.difference(now);
+
+    final hours = difference.inHours;
+    final minutes = difference.inMinutes.remainder(60);
+
+    return "$hours hours and $minutes minutes";
+  }
+
 
   Widget review(int i,double w ,String desc, String title)=> Container(
     width: w,
@@ -526,7 +578,6 @@ class _Full_Card_ProductState extends State<Full_Card_Product> {
             padding: const EdgeInsets.only(left: 11.0),
             child: InkWell(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_)=>Full_Card_Product()));
               },
               child: Container(
                 decoration: BoxDecoration(

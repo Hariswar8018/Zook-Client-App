@@ -6,8 +6,8 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:zook/api.dart';
 
 class GeminiScreen extends StatefulWidget {
-  String names;
-  GeminiScreen({super.key,required this.names});
+  String names;bool istype;String desc ;
+  GeminiScreen({super.key,required this.names,this.istype=false, this.desc=""});
 
   @override
   State<GeminiScreen> createState() => _GeminiScreenState();
@@ -20,13 +20,49 @@ class _GeminiScreenState extends State<GeminiScreen> {
   @override
   void initState() {
     super.initState();
-    progress=true;
     gu();
   }
 
   void gu() {
+    if(widget.istype){
+
+      return ;
+    }
+    progress=true;
     getGeminiResponse(widget.names);
   }
+
+  Widget te(double w,TextEditingController controller, String hint,{ bool no = false,bool desc=false
+  })=>Padding(
+    padding: const EdgeInsets.only(top: 5.0,bottom: 16),
+    child: Container(
+      width : w  , height : desc?180:50,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100, // Background color of the container
+        borderRadius: BorderRadius.circular(5.0), // Rounded corners
+      ),
+      child: Padding(
+          padding: desc?EdgeInsets.all(15): EdgeInsets.only( left :10, right : 18.0),
+          child: Center(
+            child: TextFormField(
+              keyboardType: no?TextInputType.number:TextInputType.name,
+              controller: controller,
+              minLines: desc?9:1,
+              maxLines: desc?100:1,
+              readOnly: progress,
+              decoration: InputDecoration(
+                hintText: hint,
+                isDense: true,
+                border: InputBorder.none, // No border
+              ),
+            ),
+          )
+      ),
+    ),
+  );
+
+  TextEditingController controller=TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +75,100 @@ class _GeminiScreenState extends State<GeminiScreen> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(child:Column(
+        body: widget.istype?Column(
+          children: [
+            Container(
+              width: w,
+              height: 90,
+              decoration: BoxDecoration(gradient:
+              LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.yellow,
+                  Colors.orangeAccent.shade100, // light orange
+                ],
+              ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Text("Using Zook AI to write",style: TextStyle(fontWeight: FontWeight.w800,fontSize: 22),),
+                  ),SizedBox(height: 14,)
+                ],
+              ),
+            ),
+            SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Text(widget.desc,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: te(w, controller, "Start Writing.........Everything you known about your Product",desc: true),
+            ),
+            Center(
+              child: InkWell(
+                onTap: () async {
+                  await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text("Confirm ?"),
+                    content: Text("Are you sure you wriiten Everything needed to generrate Response"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(), // Stay on screen
+                        child: Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                          progress=true;
+                          widget.istype=false;
+                          getGeminiResponse(widget.names+ " ${controller.text} "+" \nRemeber to Return only the Body and no heading");
+                          setState(() {
+
+                          });
+                        },
+                        child: Text("Yes, Generate"),
+                      ),
+                    ],
+                  ),
+                  );
+                },
+                child: Container(
+                  height:50,width:MediaQuery.of(context).size.width-20,
+                  decoration:BoxDecoration(
+                    borderRadius:BorderRadius.circular(7),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.yellow,
+                        Colors.orangeAccent.shade100, // light orange
+                      ],
+                    ),
+                  ),
+                  child: Center(child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.rocket_launch,color: Colors.black,),
+                      SizedBox(width: 6,),
+                      Text("Generate Now",style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: "RobotoS",fontWeight: FontWeight.w800
+                      ),),
+                    ],
+                  )),
+                ),
+              ),
+            ),
+          ],
+        ):SingleChildScrollView(
+          child:Column(
           children: [
             Container(
               width: w,

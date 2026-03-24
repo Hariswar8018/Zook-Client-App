@@ -284,7 +284,6 @@ class Home extends StatelessWidget {
             padding: const EdgeInsets.only(left: 11.0),
             child: InkWell(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_)=>Full_Card_Product()));
               },
               child: Container(
                 decoration: BoxDecoration(

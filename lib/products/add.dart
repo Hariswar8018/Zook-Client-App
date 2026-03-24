@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_progress/step_progress.dart';
 import 'package:zook/Global/global_model.dart';
 import 'package:zook/Global/widgets.dart';
+import 'package:zook/ai_functions/gemini_write.dart' show GeminiScreen;
 import 'package:zook/models/ProductModel.dart';
 import 'package:zook/navigation/check.dart';
 
@@ -239,6 +240,7 @@ class _ProductAddState extends State<ProductAdd> {
       ],
     );
   }
+
   Widget r3(double w){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,16 +253,110 @@ class _ProductAddState extends State<ProductAdd> {
         te(w, dim,"100 x 10"),
         t("Description"),
         t1("Please Type Description for App"),
+        InkWell(
+          onTap: () async {
+            if(name.text.isEmpty||brand.text.isEmpty||selling.text.isEmpty){
+              Send.message(context, "Write Company Name & Name of the Product and the SELLING Proce is Must", false);
+              return ;
+            }
+            String names = '''
+            RETURN a Small Description for the Product ${name.text} which is in ${cat} Section, and have brand name ${brand.text} selling for ${selling.text} Rps. Retun only the Body
+            ''';
+            String full= await Navigator.push(context,
+                MaterialPageRoute(builder: (_)=>GeminiScreen(names: names,istype: false,)));
+            if(full!=null){
+              desc.text=full;
+              setState(() {
+
+              });
+            }
+          },
+          child: Container(
+            width: w/2,
+            height: 40,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.yellow,
+                  Colors.orangeAccent.shade100, // light orange
+                ],
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.rocket_launch),
+                SizedBox(width: 5,),
+                Text("Write with AI",style: TextStyle(fontWeight: FontWeight.w900),),
+                SizedBox(width: 15,),
+                Icon(Icons.arrow_forward)
+              ],
+            ),
+          ),
+        ),
+
         te(w, desc,"SJSJJW91",desc: true),
         t("Box Contains"),
         t1("Please Type what you will send with the Products"),
         te(w, box,"Mobile, 1 Charger, 1 Data Cable, 1 Manual"),
-        t("Long Description"),
-        t1("Please Type a Long Description for your Product"),
+        InkWell(
+            onTap: (){
+              print(full_desc.text);
+            },
+            child: t("Row Wise Description")),
+        t1("Please Type a Row Wise Description for your Product with format : /model : xyz/ /charge : 500mah/....etc"),
+        InkWell(
+          onTap: () async {
+            if(name.text.isEmpty||brand.text.isEmpty||desc.text.isEmpty){
+              Send.message(context, "Write Company Name & Name of the Product and Small Description", false);
+              return ;
+            }
+            String names = '''
+            I want to write Row Wise Description for my Product ${name.text} in ${cat} Categories amd already have Small Description as "${desc.text}". I want to make a Long Description for Product Category with // Format. Like /Android : 15 Version/ /Size : 24 Pixel/ like this i want you to return for following body :  
+            ''';
+            String full= await Navigator.push(context,
+                MaterialPageRoute(builder: (_)=>GeminiScreen(names: names,istype: true,desc: "Please Write everything you known about your Product. We will generate Description in No Time !",)));
+            if(full!=null){
+              full_desc.text=full;
+              print(full_desc);
+              setState(() {
+
+              });
+            }
+          },
+          child: Container(
+            width: w/2,
+            height: 40,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.yellow,
+                  Colors.orangeAccent.shade100, // light orange
+                ],
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.rocket_launch),
+                SizedBox(width: 5,),
+                Text("Write with AI",style: TextStyle(fontWeight: FontWeight.w900),),
+                SizedBox(width: 15,),
+                Icon(Icons.arrow_forward)
+              ],
+            ),
+          ),
+        ),
+        GW.showRow(full_desc.text),
         te(w, full_desc,"https://facebook.com/pune-street-food",desc: true),
       ],
     );
   }
+
   Widget r4(double w){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -488,24 +584,32 @@ class _ProductAddState extends State<ProductAdd> {
         });
         return ;
       }
-
+      print("picturedone");
       List<String> titles=[]; List<int> amount=[];
       if(issmall){
-        amount.add(0);
         for (var item in cards) {
-          print("Title: ${item.titleController}");
+          print("------------------------------->");
+          print(item.titleController.text);
+          print(item.descController.text);
+          print("Title: ${item.titleController.text}");
           titles.add(item.titleController.text);
+          print(titles);
           print("Description: ${item.descController}");
-          amount.add(int.parse(item.descController.text));
+          try{
+            amount.add(int.parse(item.descController.text));
+          }catch(e){
+            amount.add(0);
+          }
+          print(amount);
         }
       }else{
 
       }
+      print("variant done");
       int mrpint = int.parse(mrp.text);
       int amountprice = int.parse(selling.text);
       int weights = int.parse(weight.text);
       int stocksint=int.parse(stocks.text);
-
       if(mrpint<=amountprice){
         Send.message(context, "Selling price should be less than Amount", false);
         setState(() {
@@ -513,6 +617,7 @@ class _ProductAddState extends State<ProductAdd> {
         });
         return ;
       }
+      print("sellingmoredone");
       List<String> pic=[];
       for (var pics in pictures){
         try {

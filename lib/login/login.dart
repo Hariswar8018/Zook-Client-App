@@ -158,16 +158,6 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Spacer(),
-              Text("or continue with",style: TextStyle(fontSize: 15,color: Global.blue,fontWeight: FontWeight.w500),),
-              SizedBox(height: 8,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  con(w, "assets/apple.png"),
-                  con(w, "assets/facebook.png"),
-                  con(w, "assets/google.webp"),
-                ],
-              ),
               SizedBox(height: 100,)
             ],
           ),

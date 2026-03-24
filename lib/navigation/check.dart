@@ -21,7 +21,7 @@ class SellerCheckScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    return email=="hariswarsamasi@gmaiwl.com"?NavAdmin():BlocProvider(
+    return email=="brnrinnovations@gmail.com"||email=="samasiasahi14@gmail.com"?NavAdmin():BlocProvider(
       create: (_) => SellerBloc(SellerRepository())..add(CheckSellerEvent(email)),
       child: BlocListener<SellerBloc, SellerState>(
         listener: (context, state) {

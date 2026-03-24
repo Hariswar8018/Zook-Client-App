@@ -1,4 +1,4 @@
-package com.starwish.zook_client
+package com.starwish.zook_vendor
 
 import io.flutter.embedding.android.FlutterActivity
 

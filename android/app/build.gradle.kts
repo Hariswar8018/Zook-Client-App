@@ -1,3 +1,7 @@
+
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -6,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.starwish.zook"
+    namespace = "com.starwish.zook_vendor"
     compileSdk = 35
     ndkVersion = "27.0.12077973"
 
@@ -23,16 +27,53 @@ android {
 
 
     defaultConfig {
-        applicationId = "com.starwish.zook"
+        applicationId = "com.starwish.zook_vendor"
         minSdk = 24
         targetSdk = 35
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        versionCode = 2
+        versionName = "1.0.2"
     }
+
+    signingConfigs {
+        create("release") {
+            val keystorePropertiesFile = rootProject.file("key.properties")
+            if (keystorePropertiesFile.exists()) {
+                val keystoreProperties = Properties()
+                keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
+        }
+    }
+
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("debug")
+            // ✅ Use your signing config for release
+            signingConfig = signingConfigs.getByName("release")
+
+            // ✅ Enables optimization for release build
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+
+        debug {
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+
+    // ✅ Optionally set packaging options (avoids duplicate META-INF errors)
+    packaging {
+        resources {
+            excludes += setOf("META-INF/LICENSE*", "META-INF/NOTICE*", "META-INF/DEPENDENCIES")
         }
     }
 }

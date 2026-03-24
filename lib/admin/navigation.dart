@@ -20,9 +20,20 @@ class NavAdmin extends StatelessWidget {
             leading: Icon(Icons.work),
             title: Text("All Companies",style: TextStyle(fontWeight: FontWeight.w700),),
             subtitle: Text("Check all Companies/LLP selling in Zook"),
-          )
+          ),
+          aa(Icon(Icons.view_carousel),"Home Screen Carousel","Edit the Home Screen Carousel of Customer App"),
+          aa(Icon(Icons.production_quantity_limits),"Manage Products","Manage Products and "),
+          aa(Icon(Icons.api),"Dart / ShipRocket Api","Manange API keys for Shipping Charges"),
+          aa(Icon(Icons.face),"Machine Learning Training","Manange how Machine Learning behaves under the App"),
         ],
       ),
+    );
+  }
+  Widget aa(Widget w, String str,String str2){
+    return ListTile(
+      leading: Icon(Icons.work),
+      title: Text(str,style: TextStyle(fontWeight: FontWeight.w700),),
+      subtitle: Text(str2),
     );
   }
 }
